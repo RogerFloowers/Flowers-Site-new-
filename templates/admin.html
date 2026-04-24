@@ -19,7 +19,12 @@
   </div>
 
   <!-- DASHBOARD CARDS -->
-  <div class="adm-dashboard">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;padding:18px;background:var(--bg3);border:1px solid rgba(212,83,126,.2);border-radius:12px">
+      <div style="font-size:13px;font-weight:700;color:#fff;width:100%;margin-bottom:8px">🎬 Sistema de orçamento</div>
+      <a href="{{ url_for('orcamento') }}" class="adm-btn-save" style="padding:10px 22px">+ Novo orçamento</a>
+      <a href="{{ url_for('orcamento_historico') }}" class="adm-btn-ghost" style="padding:10px 22px">📋 Histórico de orçamentos</a>
+    </div>
+<div class="adm-dashboard">
     <div class="adm-dash-card">
       <div class="adm-dash-icon" style="background:rgba(212,83,126,.15)">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14v12H3V4z" stroke="#D4537E" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 8h14" stroke="#D4537E" stroke-width="1.5"/><circle cx="7" cy="12" r="1.5" fill="#D4537E"/></svg>
@@ -53,6 +58,7 @@
   <!-- ATALHOS RÁPIDOS -->
   <div class="adm-shortcuts">
     <a href="#logo"    class="adm-shortcut">🖼 Logo</a>
+    <a href="#hero-video" class="adm-shortcut">🎥 Vídeo Hero</a>
     <a href="#banner"  class="adm-shortcut">🎨 Banner</a>
     <a href="#videos"  class="adm-shortcut">▶ Vídeos</a>
     <a href="#fotos"   class="adm-shortcut">📷 Fotos</a>
@@ -93,6 +99,46 @@
         <p class="adm-hint">A logo aparece no cabeçalho do site e no hero. Use PNG com fundo transparente para melhor resultado.</p>
       </div>
     </div>
+  </div>
+
+
+  <!-- HERO VIDEO -->
+  <div class="adm-section" id="hero-video">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Banner</div>
+        <h2 class="adm-sec-title">Vídeo do hero (loop)</h2>
+      </div>
+    </div>
+    <p class="adm-hint" style="margin-bottom:16px">
+      Envie um <strong>.mp4</strong> curto (3–6 segundos) para tocar em loop no banner.<br>
+      Recomendado: <strong>1920×1080px</strong>, sem áudio, máximo <strong>15MB</strong>.<br>
+      Se não tiver vídeo, o banner usa a foto de fundo configurada acima.
+    </p>
+    <form action="{{ url_for('salvar_hero_video') }}" method="POST" enctype="multipart/form-data">
+      {% if cfg.hero_video %}
+      <div style="margin-bottom:14px;padding:12px;background:var(--bg3);border-radius:8px;display:flex;align-items:center;gap:14px">
+        <video src="{{ url_for('static', filename='video/' + cfg.hero_video) }}"
+               style="height:70px;border-radius:6px;border:1px solid rgba(212,83,126,.3)"
+               muted autoplay loop playsinline></video>
+        <div>
+          <div style="font-size:12px;color:var(--txt);font-weight:600;margin-bottom:4px">{{ cfg.hero_video }}</div>
+          <div style="font-size:11px;color:var(--txt2)">Vídeo atual — envie outro para substituir</div>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--txt2);cursor:pointer">
+          <input type="checkbox" name="remover_video" value="1" style="accent-color:var(--pk)">
+          Remover vídeo (usar foto de fundo)
+        </label>
+      </div>
+      {% endif %}
+      <div class="af" style="margin-bottom:14px">
+        <label>Enviar vídeo MP4 (máx. 15MB)</label>
+        <input type="file" name="hero_video" accept="video/mp4" class="adm-file-input">
+      </div>
+      <button type="submit" class="adm-btn-save">Salvar vídeo</button>
+    </form>
   </div>
 
   <!-- BANNER -->
@@ -288,6 +334,38 @@
       </div>
       {% endif %}
       <button type="submit" class="adm-btn-save">Salvar vídeo</button>
+    </form>
+  </div>
+
+
+  <!-- BIO / QUEM SOMOS -->
+  <div class="adm-section" id="bio">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Quem somos</div>
+        <h2 class="adm-sec-title">Perfil & bio</h2>
+      </div>
+    </div>
+    <form action="{{ url_for('salvar_bio') }}" method="POST" enctype="multipart/form-data">
+      <div class="adm-grid-3" style="margin-bottom:14px">
+        <div class="af"><label>Nome</label>
+          <input name="bio_nome" value="{{ cfg.bio.nome if cfg.bio else 'Roger Flores' }}" placeholder="Roger Flores">
+        </div>
+        <div class="af full"><label>Bio / Quem somos (texto)</label>
+          <textarea name="bio_texto" rows="4" style="background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:var(--txt);padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;outline:none;width:100%;resize:vertical">{{ cfg.bio.texto if cfg.bio else '' }}</textarea>
+        </div>
+        <div class="af full"><label>Foto do perfil (quadrada, 400×400px recomendado)</label>
+          <input type="file" name="bio_foto" accept="image/*" class="adm-file-input">
+          {% if cfg.bio and cfg.bio.foto %}
+          <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+            <img src="{{ url_for('static', filename='img/' + cfg.bio.foto) }}"
+                 style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid rgba(212,83,126,.4)">
+            <span style="font-size:11px;color:var(--txt2)">Foto atual</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="adm-btn-save">Salvar bio</button>
     </form>
   </div>
 

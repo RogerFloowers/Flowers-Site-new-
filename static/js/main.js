@@ -1,21 +1,12 @@
 
 // ── INTRO SPLASH ─────────────────────────────────────────────────────────────
 (function(){
-  document.body.classList.add('intro-active');
-
   const splash = document.getElementById('intro-splash');
-
+  if(!splash) return;
+  // Após 3s some o splash — site já está visível normalmente
   setTimeout(()=>{
-    if(splash) splash.classList.add('hide');
-    document.body.classList.remove('intro-active');
-    document.body.classList.add('intro-done');
-    document.querySelectorAll('.hero-main-title, .hero-content').forEach(el=>{
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(30px)';
-      el.style.transition = 'opacity .9s ease, transform .9s ease';
-      setTimeout(()=>{ el.style.opacity='1'; el.style.transform='none'; }, 80);
-    });
-  }, 3000);
+    splash.classList.add('hide');
+  }, 1800);
 })();
 
 
@@ -93,17 +84,11 @@ document.addEventListener('keydown', e => {
   const SPEED    = 0.045; // menor = mais lento
 
   // Largura de um slide em %
-  const totalSlides = () => track.querySelectorAll('.carrossel-slide').length;
-
   function step(){
     if(!paused){
       pos += SPEED;
-      // Quando chegou ao fim do primeiro grupo, volta pro começo sem transição
-      const oneGroup = (slides.length / totalSlides()) * 100 / perView() * slides.length;
-      const reset    = 100 / perView() * slides.length;
-      if(pos >= reset){
-        pos = 0;
-      }
+      const reset = 100 / perView() * slides.length;
+      if(pos >= reset) pos = 0;
       track.style.transform = `translateX(-${pos}%)`;
     }
     rafId = requestAnimationFrame(step);
@@ -260,12 +245,9 @@ function playVideoApres() {
   document.getElementById('video-apres-wrap').style.cursor = 'default';
 }
 
-// ── NAV MOBILE — abre automaticamente em telas pequenas ─────────────────────
-function openMobileNav(){
-  if(window.innerWidth <= 900){
-    const m = document.getElementById('nav-mobile');
-    if(m) m.classList.add('open');
-  }
-}
-window.addEventListener('load', openMobileNav);
-window.addEventListener('resize', openMobileNav);
+// ── FALLBACK REVEAL — garante visibilidade após intro ────────────────────────
+setTimeout(()=>{
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-scale').forEach(el=>{
+    el.classList.add('visible');
+  });
+}, 3500);

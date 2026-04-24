@@ -44,8 +44,8 @@
     }
   ],
   "contato": {
-    "email": "contato@flowersfilms.com.br",
-    "whatsapp": "",
+    "email": "contatoformulasecreta@gmail.com",
+    "whatsapp": "5545999191620",
     "instagram": "https://www.instagram.com/roogerflores"
   },
   "cursos": [],
@@ -79,10 +79,6 @@
   ],
   "empresas": [
     {
-      "nome": "Sicredi",
-      "logo": "emp_0_2222.png"
-    },
-    {
       "nome": "X Business",
       "logo": ""
     },
@@ -103,5 +99,11 @@
     "desc_direita": "Especialistas em transformar momentos em obras cinematográficas que emocionam, conectam e deixam marcas eternas."
   },
   "video_apresentacao": "MdVHLOrzkuY",
-  "video_apres_thumb": "video_apres_thumb_foto-eroger.png"
+  "video_apres_thumb": "video_apres_thumb_foto-eroger.png",
+  "hero_video": "hero_video_homem_fundo.mp4",
+  "bio": {
+    "foto": "bio_1.png",
+    "nome": "Roger Flores",
+    "texto": "Videomaker e produtor visual apaixonado por transformar momentos em cinema. Fundador da Flowers Films, especialista em eventos, produtos e conteúdo audiovisual para marcas que querem impactar."
+  }
 }

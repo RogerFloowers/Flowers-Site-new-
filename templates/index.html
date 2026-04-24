@@ -16,9 +16,14 @@
 <!-- HERO -->
 <section class="hero-new">
 
-  <!-- Foto de fundo -->
+  <!-- Fundo: vídeo loop ou foto -->
   <div class="hero-foto-wrap">
-    {% if cfg.banner.bg %}
+    {% if cfg.hero_video %}
+      <video class="hero-foto" autoplay muted loop playsinline preload="auto"
+             poster="{% if cfg.banner.bg %}{{ url_for('static', filename='img/' + cfg.banner.bg) }}{% endif %}">
+        <source src="{{ url_for('static', filename='video/' + cfg.hero_video) }}" type="video/mp4">
+      </video>
+    {% elif cfg.banner.bg %}
       <img src="{{ url_for('static', filename='img/' + cfg.banner.bg) }}" alt="Hero" class="hero-foto">
     {% else %}
       <img src="{{ url_for('static', filename='img/hero_foto.jpg') }}" alt="Hero" class="hero-foto" onerror="this.style.display='none'">
@@ -57,6 +62,25 @@
 </section>
 
 
+
+
+<!-- BOTÕES DE AÇÃO -->
+<div class="hero-actions reveal">
+  {% if cfg.contato.whatsapp %}
+  <a href="https://wa.me/{{ cfg.contato.whatsapp }}" target="_blank" class="ha-btn ha-whats">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 21l1.65-4.88A8.5 8.5 0 1 1 12 20.5a8.46 8.46 0 0 1-4.12-1.07L3 21z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    WhatsApp
+  </a>
+  {% endif %}
+  <a href="{{ url_for('cursos') }}" class="ha-btn ha-cursos">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Aprenda comigo
+  </a>
+  <a href="#quem-somos" class="ha-btn ha-quem">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    Quem somos nós
+  </a>
+</div>
 
 <!-- VIDEO APRESENTAÇÃO -->
 {% if cfg.video_apresentacao %}
@@ -229,27 +253,65 @@
 
 <!-- INSTAGRAM -->
 <section class="sec-instagram">
-  <div class="insta-card reveal">
-    <div class="insta-left">
-      <div class="insta-profile">
-        <div class="insta-av"><div class="insta-av-inner">RF</div></div>
-        <div>
-          <div class="insta-handle">@roogerflores</div>
-          <div class="insta-sub">Roger Flores · Flowers Films</div>
-        </div>
-      </div>
-      <p class="insta-bio">Bastidores, lançamentos e conteúdo exclusivo sobre videomaking e produção audiovisual.</p>
-      <a href="{{ cfg.contato.instagram }}" target="_blank" rel="noopener" class="btn-insta">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg>
-        Seguir no Instagram
+  <div class="insta-simples reveal">
+    <div class="insta-svg">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#D4537E" stroke-width="1.8"/>
+        <circle cx="12" cy="12" r="5" stroke="#D4537E" stroke-width="1.8"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="#D4537E"/>
+      </svg>
+    </div>
+    <div class="insta-btns">
+      <a href="https://www.instagram.com/roogerflores" target="_blank" rel="noopener" class="insta-btn-perfil">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+        @roogerflores
+      </a>
+      <a href="https://www.instagram.com/produtoraflowers" target="_blank" rel="noopener" class="insta-btn-perfil">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+        @produtoraflowers
       </a>
     </div>
-    <div class="insta-thumbs">
-      {% for i in range(6) %}
-      <a href="{{ cfg.contato.instagram }}" target="_blank" class="insta-thumb">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="18" height="18" rx="4" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="10" cy="10" r="4" stroke="#2a2a2a" stroke-width="1.2"/></svg>
-      </a>
-      {% endfor %}
+  </div>
+</section>
+
+<!-- QUEM SOMOS -->
+<section class="sec-quem" id="quem-somos">
+  <div class="quem-card reveal">
+    <div class="quem-avatar">
+      {% if cfg.bio.foto %}
+        <img src="{{ url_for('static', filename='img/' + cfg.bio.foto) }}" alt="{{ cfg.bio.nome }}">
+      {% else %}
+        <div class="quem-avatar-ph">RF</div>
+      {% endif %}
+    </div>
+    <div class="quem-info">
+      <div class="quem-top">
+        <div>
+          <div class="quem-nome">{{ cfg.bio.nome }}</div>
+          <div class="quem-tag">Videomaker & Produtor Visual</div>
+        </div>
+        <a href="{{ cfg.contato.instagram }}" target="_blank" class="quem-seguir">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+          Seguir
+        </a>
+      </div>
+      <p class="quem-bio">{{ cfg.bio.texto }}</p>
+      <div class="quem-stats">
+        <div class="quem-stat">
+          <div class="quem-stat-num">+80</div>
+          <div class="quem-stat-lbl">Projetos</div>
+        </div>
+        <div class="quem-stat-sep"></div>
+        <div class="quem-stat">
+          <div class="quem-stat-num">5 anos</div>
+          <div class="quem-stat-lbl">Experiência</div>
+        </div>
+        <div class="quem-stat-sep"></div>
+        <div class="quem-stat">
+          <div class="quem-stat-num">Brasil</div>
+          <div class="quem-stat-lbl">Todo o país</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -286,18 +348,7 @@
         {% endif %}
       </div>
     </div>
-    <div class="contato-form reveal">
-      <h3>Envie uma mensagem</h3>
-      <form action="mailto:{{ cfg.contato.email }}" method="get">
-        <div class="form-row">
-          <div class="fg"><input type="text" name="nome" placeholder="Seu nome" required></div>
-          <div class="fg"><input type="email" name="email" placeholder="Seu e-mail"></div>
-        </div>
-        <div class="fg"><input type="text" name="assunto" placeholder="Assunto do projeto"></div>
-        <div class="fg"><textarea name="mensagem" placeholder="Conte sobre seu projeto..." rows="4"></textarea></div>
-        <button type="submit" class="btn-pk btn-full">Enviar mensagem</button>
-      </form>
-    </div>
+
   </div>
 </section>
 

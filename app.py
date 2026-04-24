@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory, abort, send_file
 import os, json
 from functools import wraps
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'flowers-films-secret-2026'
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
 
 BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 FOTOS_DIR   = os.path.join(BASE_DIR, 'uploads', 'fotos')
@@ -292,9 +293,45 @@ def salvar_video_apres():
     save_config(cfg)
     return redirect(url_for('admin') + '#video-apres')
 
+
+@app.route('/admin/salvar-hero-video', methods=['POST'])
+@login_required
+def salvar_hero_video():
+    cfg  = load_config()
+    vid  = request.files.get('hero_video')
+    video_dir = os.path.join(STATIC_DIR, 'video')
+    os.makedirs(video_dir, exist_ok=True)
+    if vid and vid.filename and vid.filename.lower().endswith('.mp4'):
+        fn = secure_filename('hero_' + vid.filename)
+        vid.save(os.path.join(video_dir, fn))
+        cfg['hero_video'] = fn
+    elif request.form.get('remover_video') == '1':
+        cfg['hero_video'] = ''
+    save_config(cfg)
+    return redirect(url_for('admin') + '#hero-video')
+
+
+@app.route('/admin/salvar-bio', methods=['POST'])
+@login_required
+def salvar_bio():
+    cfg = load_config()
+    if 'bio' not in cfg:
+        cfg['bio'] = {}
+    cfg['bio']['nome']  = request.form.get('bio_nome', '').strip()
+    cfg['bio']['texto'] = request.form.get('bio_texto', '').strip()
+    f = request.files.get('bio_foto')
+    if f and f.filename and allowed(f.filename):
+        fn = secure_filename('bio_' + f.filename)
+        f.save(os.path.join(STATIC_DIR, 'img', fn))
+        cfg['bio']['foto'] = fn
+    save_config(cfg)
+    return redirect(url_for('admin') + '#bio')
+
+
+
+
 if __name__ == '__main__':
-    if not os.path.exists(CONFIG_FILE):
-        save_config(DEFAULT_CONFIG)
-    print('\n  ✦  FLOWERS FILMS — Site Público')
-    print('  →  http://localhost:5051\n')
+    with app.app_context():
+        if not os.path.exists(CONFIG_FILE):
+            save_config(DEFAULT_CONFIG)
     app.run(debug=True, port=5051, host="0.0.0.0")
