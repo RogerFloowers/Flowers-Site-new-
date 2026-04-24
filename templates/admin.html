@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+{% block title %}Admin — Flowers Films{% endblock %}
+{% block content %}
+<div class="adm-wrap">
+
+  <!-- HEADER -->
+  <div class="adm-topbar">
+    <div>
+      <div class="adm-eyebrow">Painel administrativo</div>
+      <h1 class="adm-h1">Olá, Roger 👋</h1>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <a href="{{ url_for('index') }}" target="_blank" class="adm-btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Ver site
+      </a>
+      <a href="{{ url_for('logout') }}" class="adm-btn-danger">Sair</a>
+    </div>
+  </div>
+
+  <!-- DASHBOARD CARDS -->
+  <div class="adm-dashboard">
+    <div class="adm-dash-card">
+      <div class="adm-dash-icon" style="background:rgba(212,83,126,.15)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14v12H3V4z" stroke="#D4537E" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 8h14" stroke="#D4537E" stroke-width="1.5"/><circle cx="7" cy="12" r="1.5" fill="#D4537E"/></svg>
+      </div>
+      <div class="adm-dash-num">{{ total_videos }}</div>
+      <div class="adm-dash-lbl">Vídeos</div>
+    </div>
+    <div class="adm-dash-card">
+      <div class="adm-dash-icon" style="background:rgba(34,197,94,.12)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#22c55e" stroke-width="1.5"/><circle cx="10" cy="10" r="3" stroke="#22c55e" stroke-width="1.5"/></svg>
+      </div>
+      <div class="adm-dash-num">{{ total_fotos }}</div>
+      <div class="adm-dash-lbl">Fotos</div>
+    </div>
+    <div class="adm-dash-card">
+      <div class="adm-dash-icon" style="background:rgba(96,165,250,.12)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#60a5fa" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="adm-dash-num">Ativo</div>
+      <div class="adm-dash-lbl">Site online</div>
+    </div>
+    <div class="adm-dash-card">
+      <div class="adm-dash-icon" style="background:rgba(245,158,11,.12)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5.4 5.6.8-4 4 .9 5.8L10 15.4l-4.9 2.6.9-5.8-4-4 5.6-.8L10 2z" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="adm-dash-num">PRO</div>
+      <div class="adm-dash-lbl">Plano</div>
+    </div>
+  </div>
+
+  <!-- ATALHOS RÁPIDOS -->
+  <div class="adm-shortcuts">
+    <a href="#logo"    class="adm-shortcut">🖼 Logo</a>
+    <a href="#banner"  class="adm-shortcut">🎨 Banner</a>
+    <a href="#videos"  class="adm-shortcut">▶ Vídeos</a>
+    <a href="#fotos"   class="adm-shortcut">📷 Fotos</a>
+    <a href="#contato" class="adm-shortcut">📬 Contato</a>
+    <a href="#stats"   class="adm-shortcut">📊 Stats</a>
+  </div>
+
+  <!-- LOGO -->
+  <div class="adm-section" id="logo">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Identidade</div>
+        <h2 class="adm-sec-title">Logo do site</h2>
+      </div>
+    </div>
+    <div class="adm-two-col">
+      <div>
+        <div class="adm-preview-logo">
+          {% if cfg.logo %}
+            <img src="{{ url_for('static', filename='img/' + cfg.logo) }}" alt="Logo atual" style="max-height:100px;max-width:200px;object-fit:contain">
+            <div class="adm-preview-lbl">Logo atual</div>
+          {% else %}
+            <div style="color:var(--txt3);font-size:13px;text-align:center">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style="opacity:.3;margin-bottom:8px"><rect x="2" y="2" width="28" height="28" rx="4" stroke="#fff" stroke-width="1.5"/><path d="M8 24l6-8 4 5 3-3 5 6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="12" r="2" stroke="#fff" stroke-width="1.5"/></svg>
+              <br>Nenhuma logo enviada
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div>
+        <form action="{{ url_for('salvar_logo') }}" method="POST" enctype="multipart/form-data">
+          <div class="af" style="margin-bottom:14px">
+            <label>Enviar nova logo (PNG transparente recomendado)</label>
+            <input type="file" name="logo" accept="image/*" class="adm-file-input">
+          </div>
+          <button type="submit" class="adm-btn-save">Salvar logo</button>
+        </form>
+        <p class="adm-hint">A logo aparece no cabeçalho do site e no hero. Use PNG com fundo transparente para melhor resultado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANNER -->
+  <div class="adm-section" id="banner">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Início do site</div>
+        <h2 class="adm-sec-title">Banner principal</h2>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="adm-banner-preview" {% if cfg.banner.bg %}style="background-image:url('{{ url_for('static', filename='img/' + cfg.banner.bg) }}');background-size:cover;background-position:center"{% endif %}>
+      <div class="adm-banner-overlay"></div>
+      <div class="adm-banner-content">
+        <div class="adm-banner-title">
+          <span>{{ cfg.hero_texto.titulo_normal }} <strong>{{ cfg.hero_texto.titulo_bold }}</strong></span>
+          <span style="font-size:60%;opacity:.7;font-style:italic">{{ cfg.hero_texto.subtitulo }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Textos do hero -->
+    <form action="{{ url_for('salvar_banner') }}" method="POST" enctype="multipart/form-data">
+      <div style="font-size:11px;font-weight:700;color:var(--pk);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Textos do banner</div>
+      <div class="adm-grid-3">
+        <div class="af"><label>Texto normal (início)</label>
+          <input name="titulo_normal" value="{{ cfg.hero_texto.titulo_normal }}" placeholder="Transformando"></div>
+        <div class="af full"><label>Texto em negrito (destaque)</label>
+          <input name="titulo_bold" value="{{ cfg.hero_texto.titulo_bold }}" placeholder="tudo em Cinema."></div>
+        <div class="af full"><label>Subtítulo (linha abaixo)</label>
+          <input name="subtitulo" value="{{ cfg.hero_texto.subtitulo }}" placeholder="e criando um legado..."></div>
+        <div class="af full"><label>Descrição esquerda (rodapé do banner)</label>
+          <input name="desc_esquerda" value="{{ cfg.hero_texto.desc_esquerda }}" placeholder="Uma produtora audiovisual..."></div>
+        <div class="af full"><label>Descrição direita (rodapé do banner)</label>
+          <input name="desc_direita" value="{{ cfg.hero_texto.desc_direita }}" placeholder="Especialistas em..."></div>
+        <div class="af full">
+          <label>Foto de fundo do banner</label>
+          <input type="file" name="banner_bg" accept="image/*" class="adm-file-input">
+          {% if cfg.banner.bg %}
+          <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+            <img src="{{ url_for('static', filename='img/' + cfg.banner.bg) }}" style="height:44px;border-radius:6px;object-fit:cover;border:1px solid rgba(255,255,255,.1)">
+            <span style="font-size:11px;color:var(--txt2)">Fundo atual — envie outro para substituir</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="adm-btn-save">Salvar banner</button>
+    </form>
+  </div>
+
+
+  <!-- VÍDEOS -->
+  <div class="adm-section" id="videos">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Portfólio</div>
+        <h2 class="adm-sec-title">Vídeos</h2>
+      </div>
+    </div>
+    <form action="{{ url_for('salvar_videos') }}" method="POST" enctype="multipart/form-data">
+      <div id="videos-wrap">
+        {% for v in cfg.videos %}
+        <div class="adm-video-row">
+          <div class="adm-video-thumb">
+            {% if v.capa %}
+              <img src="{{ url_for('static', filename='img/capas/' + v.capa) }}" alt="capa">
+            {% else %}
+              <img src="https://img.youtube.com/vi/{{ v.id }}/hqdefault.jpg" alt="thumb" onerror="this.src=''">
+            {% endif %}
+            <div class="adm-video-num">{{ loop.index }}</div>
+          </div>
+          <div class="adm-video-fields">
+            <div class="af"><label>Link ou ID do YouTube</label><input type="text" name="video_id" value="{{ v.id }}" placeholder="https://youtu.be/..."></div>
+            <div class="af"><label>Título (opcional)</label><input type="text" name="video_titulo" value="{{ v.titulo }}" placeholder="Nome do projeto"></div>
+            <div class="af">
+              <label>Capa personalizada</label>
+              <input type="file" name="video_capa_{{ loop.index0 }}" accept="image/*" class="adm-file-input">
+            </div>
+          </div>
+          <button type="button" class="adm-btn-rm" onclick="this.closest('.adm-video-row').remove()">✕</button>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="button" class="adm-btn-add" onclick="addVideoRow()">+ Adicionar vídeo</button>
+      <br><br>
+      <button type="submit" class="adm-btn-save">Salvar vídeos</button>
+    </form>
+  </div>
+
+  <!-- FOTOS -->
+  <div class="adm-section" id="fotos">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Portfólio</div>
+        <h2 class="adm-sec-title">Fotos</h2>
+      </div>
+    </div>
+    {% if fotos %}
+    <div class="adm-fotos-grid">
+      {% for ft in fotos %}
+      <div class="adm-foto">
+        <img src="{{ url_for('foto', filename=ft) }}" alt="{{ ft }}">
+        <form action="{{ url_for('deletar_foto', filename=ft) }}" method="POST">
+          <button type="submit" class="adm-foto-del" onclick="return confirm('Deletar?')">✕</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="adm-hint" style="margin-bottom:16px">Nenhuma foto ainda. Faça upload abaixo.</p>
+    {% endif %}
+    <form action="{{ url_for('upload_foto') }}" method="POST" enctype="multipart/form-data">
+      <div class="af" style="margin-bottom:12px">
+        <label>Enviar fotos (JPG, PNG, WEBP — múltiplas)</label>
+        <input type="file" name="fotos" multiple accept="image/*" class="adm-file-input">
+      </div>
+      <button type="submit" class="adm-btn-save">Fazer upload</button>
+    </form>
+  </div>
+
+  <!-- CONTATO -->
+  <div class="adm-section" id="contato">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Contato</div>
+        <h2 class="adm-sec-title">Informações de contato</h2>
+      </div>
+    </div>
+    <form action="{{ url_for('salvar_contato') }}" method="POST">
+      <div class="adm-grid-3">
+        <div class="af"><label>E-mail</label><input name="email" value="{{ cfg.contato.email }}" placeholder="contato@flowersfilms.com.br"></div>
+        <div class="af"><label>WhatsApp (só números)</label><input name="whatsapp" value="{{ cfg.contato.whatsapp }}" placeholder="5544999999999"></div>
+        <div class="af"><label>Instagram (URL)</label><input name="instagram" value="{{ cfg.contato.instagram }}" placeholder="https://instagram.com/..."></div>
+      </div>
+      <button type="submit" class="adm-btn-save">Salvar contato</button>
+    </form>
+  </div>
+
+  <!-- STATS -->
+  <div class="adm-section" id="stats">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Números</div>
+        <h2 class="adm-sec-title">Stats do banner</h2>
+      </div>
+    </div>
+    <form action="{{ url_for('salvar_stats') }}" method="POST">
+      {% for s in cfg.stats %}
+      <div class="adm-stat-row">
+        <div class="af"><label>Número</label><input name="stat_num" value="{{ s.num }}" placeholder="+80"></div>
+        <div class="af"><label>Descrição</label><input name="stat_label" value="{{ s.label }}" placeholder="Projetos entregues"></div>
+      </div>
+      {% endfor %}
+      <button type="submit" class="adm-btn-save">Salvar stats</button>
+    </form>
+  </div>
+
+
+
+  <!-- VIDEO APRESENTAÇÃO -->
+  <div class="adm-section" id="video-apres">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Vídeo</div>
+        <h2 class="adm-sec-title">Vídeo de apresentação</h2>
+      </div>
+    </div>
+    <form action="{{ url_for('salvar_video_apres') }}" method="POST" enctype="multipart/form-data">
+      <div class="af" style="margin-bottom:12px">
+        <label>Link ou ID do YouTube</label>
+        <input type="text" name="video_apres"
+          value="{{ cfg.video_apresentacao }}"
+          placeholder="https://youtu.be/... ou https://www.youtube.com/watch?v=...">
+      </div>
+      <div class="af" style="margin-bottom:14px">
+        <label>Miniatura personalizada (thumbnail) — recomendado 1280×720px JPG/PNG</label>
+        <input type="file" name="video_apres_thumb" accept="image/*" class="adm-file-input">
+        {% if cfg.video_apres_thumb %}
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+          <img src="{{ url_for('static', filename='img/' + cfg.video_apres_thumb) }}"
+               style="height:60px;border-radius:6px;object-fit:cover;border:1px solid rgba(212,83,126,.3)">
+          <span style="font-size:11px;color:var(--txt2)">Miniatura atual — envie outra para substituir</span>
+        </div>
+        {% else %}
+        <p class="adm-hint">Se não enviar, usa a thumbnail automática do YouTube.</p>
+        {% endif %}
+      </div>
+      {% if cfg.video_apresentacao %}
+      <div style="aspect-ratio:16/9;max-width:360px;border-radius:8px;overflow:hidden;margin-bottom:14px;background:#000;border:1.5px solid var(--pk)">
+        <iframe src="https://www.youtube.com/embed/{{ cfg.video_apresentacao }}"
+          style="width:100%;height:100%;border:none" allowfullscreen></iframe>
+      </div>
+      {% endif %}
+      <button type="submit" class="adm-btn-save">Salvar vídeo</button>
+    </form>
+  </div>
+
+  <!-- CLIENTES -->
+  <div class="adm-section" id="clientes">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Portfólio de clientes</div>
+        <h2 class="adm-sec-title">Clientes & parceiros</h2>
+      </div>
+    </div>
+    <p class="adm-hint" style="margin-bottom:16px">
+      Foto recomendada: <strong>200×200px</strong> (quadrada, rosto centralizado). PNG ou JPG.
+    </p>
+    <form action="{{ url_for('salvar_clientes') }}" method="POST" enctype="multipart/form-data">
+      <div id="clientes-wrap">
+        {% for c in cfg.clientes %}
+        <div class="adm-cli-row">
+          <div class="adm-cli-avatar">
+            {% if c.foto %}
+              <img src="{{ url_for('static', filename='img/clientes/' + c.foto) }}" alt="{{ c.nome }}">
+            {% else %}
+              <div class="adm-cli-ph">{{ c.nome[0] if c.nome else '?' }}</div>
+            {% endif %}
+          </div>
+          <div class="adm-cli-fields">
+            <div class="af"><label>Nome</label><input type="text" name="cli_nome" value="{{ c.nome }}" placeholder="Nome do cliente"></div>
+            <div class="af"><label>Cargo / descrição</label><input type="text" name="cli_cargo" value="{{ c.cargo }}" placeholder="Ex: Empresário"></div>
+            <div class="af"><label>Foto (200×200px)</label><input type="file" name="cli_foto_{{ loop.index0 }}" accept="image/*" class="adm-file-input"></div>
+          </div>
+          <button type="button" class="adm-btn-rm" onclick="this.closest('.adm-cli-row').remove()">✕</button>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="button" class="adm-btn-add" onclick="addClienteRow()" style="margin-bottom:14px">+ Adicionar cliente</button>
+      <br>
+      <button type="submit" class="adm-btn-save">Salvar clientes</button>
+    </form>
+  </div>
+
+  <!-- EMPRESAS -->
+  <div class="adm-section" id="empresas">
+    <div class="adm-sec-head">
+      <div>
+        <div class="adm-sec-tag">Empresas parceiras</div>
+        <h2 class="adm-sec-title">Logos de empresas</h2>
+      </div>
+    </div>
+    <p class="adm-hint" style="margin-bottom:16px">
+      Logo recomendada: <strong>200×80px</strong> (horizontal, fundo transparente). PNG preferencialmente.<br>
+      Máximo de <strong>6 logos</strong> exibidas no site.
+    </p>
+    <form action="{{ url_for('salvar_empresas') }}" method="POST" enctype="multipart/form-data">
+      <div id="empresas-wrap">
+        {% for e in cfg.empresas %}
+        <div class="adm-emp-row">
+          <div class="adm-emp-logo-prev">
+            {% if e.logo %}
+              <img src="{{ url_for('static', filename='img/empresas/' + e.logo) }}" alt="{{ e.nome }}">
+            {% else %}
+              <span>{{ e.nome }}</span>
+            {% endif %}
+          </div>
+          <div class="adm-cli-fields">
+            <div class="af"><label>Nome da empresa</label><input type="text" name="emp_nome" value="{{ e.nome }}" placeholder="Ex: Sicredi"></div>
+            <div class="af"><label>Logo (200×80px PNG)</label><input type="file" name="emp_logo_{{ loop.index0 }}" accept="image/*" class="adm-file-input"></div>
+          </div>
+          <button type="button" class="adm-btn-rm" onclick="this.closest('.adm-emp-row').remove()">✕</button>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="button" class="adm-btn-add" onclick="addEmpresaRow()" style="margin-bottom:14px">+ Adicionar empresa</button>
+      <br>
+      <button type="submit" class="adm-btn-save">Salvar empresas</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

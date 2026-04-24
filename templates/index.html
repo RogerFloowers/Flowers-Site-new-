@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% block title %}Flowers Films — Videomaker & Produtor Visual
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close" onclick="closeLightbox()">×</span>
+  <button class="lightbox-prev" onclick="event.stopPropagation();lbMove(-1)">&#8592;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-next" onclick="event.stopPropagation();lbMove(1)">&#8594;</button>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero-new">
+
+  <!-- Foto de fundo -->
+  <div class="hero-foto-wrap">
+    {% if cfg.banner.bg %}
+      <img src="{{ url_for('static', filename='img/' + cfg.banner.bg) }}" alt="Hero" class="hero-foto">
+    {% else %}
+      <img src="{{ url_for('static', filename='img/hero_foto.jpg') }}" alt="Hero" class="hero-foto" onerror="this.style.display='none'">
+    {% endif %}
+    <div class="hero-foto-overlay"></div>
+  </div>
+
+  <!-- FLOWERS gigante de fundo -->
+  <div class="hero-bg-txt" aria-hidden="true">FLOWERS</div>
+
+  <!-- Logo pequena lateral esquerda -->
+  <div class="hero-logo-side">
+    {% if cfg.logo %}
+      <img src="{{ url_for('static', filename='img/' + cfg.logo) }}" alt="Logo" class="hero-logo-side-img">
+    {% endif %}
+  </div>
+
+  <!-- Texto principal embaixo à esquerda -->
+  <div class="hero-content">
+    <h1 class="hero-main-title">
+      {{ cfg.hero_texto.titulo_normal }} <strong>{{ cfg.hero_texto.titulo_bold }}</strong><br>
+      <span class="hero-sub-line">{{ cfg.hero_texto.subtitulo }}</span>
+    </h1>
+
+    <div class="hero-bottom-row">
+      <div class="hero-desc-left">
+        <p>{{ cfg.hero_texto.desc_esquerda }}</p>
+      </div>
+      <div class="hero-divider-v"></div>
+      <div class="hero-desc-right">
+        <p>{{ cfg.hero_texto.desc_direita }}</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- VIDEO APRESENTAÇÃO -->
+{% if cfg.video_apresentacao %}
+<section class="sec-video-apres">
+  <div class="video-apres-wrap" id="video-apres-wrap" onclick="playVideoApres()">
+    {% if cfg.video_apres_thumb %}
+      <img src="{{ url_for('static', filename='img/' + cfg.video_apres_thumb) }}"
+           alt="Vídeo de apresentação" class="video-apres-thumb" id="video-apres-thumb">
+    {% else %}
+      <img src="https://img.youtube.com/vi/{{ cfg.video_apresentacao }}/maxresdefault.jpg"
+           alt="Vídeo de apresentação" class="video-apres-thumb" id="video-apres-thumb"
+           onerror="this.src='https://img.youtube.com/vi/{{ cfg.video_apresentacao }}/hqdefault.jpg'">
+    {% endif %}
+    <div class="video-apres-play" id="video-apres-play">
+      <div class="video-apres-play-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6 4l14 8-14 8V4z" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+    <iframe id="video-apres-iframe" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:none;z-index:3"
+      src=""
+      data-src="https://www.youtube.com/embed/{{ cfg.video_apresentacao }}?autoplay=1&rel=0&modestbranding=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+{% endif %}
+
+<!-- CLIENTES ↓ inserido automaticamente -->
+<section class="sec-clientes" id="clientes">
+  <div class="sec-clientes-inner">
+    <div class="sec-clientes-header reveal-left">
+      <h2 class="sec-clientes-title">Parceiros que a <span>produtora</span> já gravou 🎬</h2>
+      <p class="sec-clientes-sub">Eventos empresariais em todo o Brasil 🇧🇷</p>
+    </div>
+
+    {% if cfg.clientes %}
+    <div class="carrossel-wrap">
+      <div class="carrossel-track" id="carrossel-clientes">
+        {% for c in cfg.clientes %}
+        <div class="carrossel-slide reveal-scale">
+          <div class="cli-card">
+            <div class="cli-avatar">
+              {% if c.foto %}
+                <img src="{{ url_for('static', filename='img/clientes/' + c.foto) }}" alt="{{ c.nome }}">
+              {% else %}
+                <div class="cli-avatar-ph">{{ c.nome[0] }}</div>
+              {% endif %}
+            </div>
+            <div class="cli-info">
+              <div class="cli-nome">{{ c.nome }} <span class="cli-check">✓</span></div>
+              <div class="cli-cargo">{{ c.cargo }}</div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="carrossel-dots" id="carrossel-dots"></div>
+    </div>
+    {% endif %}
+
+    <!-- EMPRESAS -->
+    {% if cfg.empresas %}
+    <div class="empresas-strip reveal">
+      <div class="empresas-inner">
+        {% for e in cfg.empresas[:6] %}
+        <div class="empresa-item">
+          {% if e.logo %}
+            <img src="{{ url_for('static', filename='img/empresas/' + e.logo) }}" alt="{{ e.nome }}" class="empresa-logo">
+          {% else %}
+            <span class="empresa-nome-txt">{{ e.nome }}</span>
+          {% endif %}
+        </div>
+        {% if not loop.last %}
+        <div class="empresa-sep">|</div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<!-- FIM CLIENTES -->
+
+<!-- VÍDEOS -->
+<section class="sec-videos" id="videos">
+  <div class="sec-header reveal">
+    <div class="sec-left">
+      <div class="sec-tag">Portfólio</div>
+      <h2 class="sec-title">Produções em vídeo</h2>
+    </div>
+    <a href="{{ url_for('portfolio_videos') }}" class="btn-more">
+      Ver todos
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  {% if cfg.videos %}
+  <div class="videos-compact reveal">
+    {% for v in cfg.videos[:4] %}
+    <div class="vc-card" onclick="playVideo(this, '{{ v.id }}')">
+      {% if v.capa %}
+        <img src="{{ url_for('static', filename='img/capas/' + v.capa) }}" alt="Vídeo {{ loop.index }}" class="video-thumb">
+      {% else %}
+        <img src="https://img.youtube.com/vi/{{ v.id }}/hqdefault.jpg" alt="Vídeo {{ loop.index }}" class="video-thumb">
+      {% endif %}
+      <div class="vc-overlay">
+        <div class="vc-play">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2l10 6-10 6V2z" fill="#fff"/></svg>
+        </div>
+      </div>
+      <div class="vc-num">{{ '%02d'|format(loop.index) }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state reveal">Nenhum vídeo cadastrado ainda.</div>
+  {% endif %}
+
+  <div class="sec-footer reveal">
+    <a href="{{ url_for('portfolio_videos') }}" class="btn-more-center">
+      Ver mais vídeos
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOTOS -->
+<section class="sec-fotos" id="fotos">
+  <div class="sec-header reveal">
+    <div class="sec-left">
+      <div class="sec-tag">Fotografia</div>
+      <h2 class="sec-title">Ensaios & eventos</h2>
+    </div>
+    <a href="{{ url_for('portfolio_fotos') }}" class="btn-more">
+      Ver todas
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="fotos-grid reveal">
+    {% if fotos %}
+      {% for foto in fotos %}
+      <div class="foto-card" onclick="openLightbox('{{ url_for('foto', filename=foto) }}', {{ loop.index0 }})" style="cursor:zoom-in">
+        <img src="{{ url_for('foto', filename=foto) }}" alt="Foto {{ loop.index }}" loading="lazy">
+        <div class="foto-hover"><div class="foto-plus">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        </div></div>
+      </div>
+      {% endfor %}
+    {% else %}
+      {% for i in range(8) %}
+      <div class="foto-card foto-placeholder">
+        <div class="foto-ph-inner">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="#333" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#333" stroke-width="1.5"/></svg>
+          <span>Foto</span>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div class="sec-footer reveal">
+    <a href="{{ url_for('portfolio_fotos') }}" class="btn-more-center">
+      Ver mais fotos
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="sec-instagram">
+  <div class="insta-card reveal">
+    <div class="insta-left">
+      <div class="insta-profile">
+        <div class="insta-av"><div class="insta-av-inner">RF</div></div>
+        <div>
+          <div class="insta-handle">@roogerflores</div>
+          <div class="insta-sub">Roger Flores · Flowers Films</div>
+        </div>
+      </div>
+      <p class="insta-bio">Bastidores, lançamentos e conteúdo exclusivo sobre videomaking e produção audiovisual.</p>
+      <a href="{{ cfg.contato.instagram }}" target="_blank" rel="noopener" class="btn-insta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg>
+        Seguir no Instagram
+      </a>
+    </div>
+    <div class="insta-thumbs">
+      {% for i in range(6) %}
+      <a href="{{ cfg.contato.instagram }}" target="_blank" class="insta-thumb">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="18" height="18" rx="4" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="10" cy="10" r="4" stroke="#2a2a2a" stroke-width="1.2"/></svg>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="sec-contato" id="contato">
+  <div class="sec-header reveal">
+    <div class="sec-left">
+      <div class="sec-tag">Contato</div>
+      <h2 class="sec-title">Vamos criar juntos?</h2>
+    </div>
+  </div>
+  <div class="contato-grid">
+    <div class="contato-info reveal">
+      <p class="contato-desc">Conte sobre seu projeto e vamos transformar sua ideia em realidade visual. Respondo em até 24h.</p>
+      <div class="contact-cards">
+        {% if cfg.contato.instagram %}
+        <a href="{{ cfg.contato.instagram }}" target="_blank" class="contact-card">
+          <div class="cc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#D4537E" stroke-width="1.8"/><circle cx="12" cy="12" r="5" stroke="#D4537E" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="#D4537E"/></svg></div>
+          <div><div class="cc-main">Instagram</div><div class="cc-sub">@roogerflores</div></div>
+        </a>
+        {% endif %}
+        {% if cfg.contato.email %}
+        <a href="mailto:{{ cfg.contato.email }}" class="contact-card">
+          <div class="cc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 5h18v14H3V5z" stroke="#D4537E" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 5l9 8 9-8" stroke="#D4537E" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <div><div class="cc-main">E-mail</div><div class="cc-sub">{{ cfg.contato.email }}</div></div>
+        </a>
+        {% endif %}
+        {% if cfg.contato.whatsapp %}
+        <a href="https://wa.me/{{ cfg.contato.whatsapp }}" target="_blank" class="contact-card">
+          <div class="cc-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 21l1.65-4.88A8.5 8.5 0 1 1 12 20.5a8.46 8.46 0 0 1-4.12-1.07L3 21z" stroke="#D4537E" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <div><div class="cc-main">WhatsApp</div><div class="cc-sub">Chamar agora</div></div>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="contato-form reveal">
+      <h3>Envie uma mensagem</h3>
+      <form action="mailto:{{ cfg.contato.email }}" method="get">
+        <div class="form-row">
+          <div class="fg"><input type="text" name="nome" placeholder="Seu nome" required></div>
+          <div class="fg"><input type="email" name="email" placeholder="Seu e-mail"></div>
+        </div>
+        <div class="fg"><input type="text" name="assunto" placeholder="Assunto do projeto"></div>
+        <div class="fg"><textarea name="mensagem" placeholder="Conte sobre seu projeto..." rows="4"></textarea></div>
+        <button type="submit" class="btn-pk btn-full">Enviar mensagem</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close" onclick="closeLightbox()">×</span>
+  <button class="lightbox-prev" onclick="event.stopPropagation();lbMove(-1)">&#8592;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-next" onclick="event.stopPropagation();lbMove(1)">&#8594;</button>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
+{% endblock %}

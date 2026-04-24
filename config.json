@@ -1,0 +1,107 @@
+{
+  "banner": {
+    "linha1": "CRIANDO",
+    "linha2": "HISTÓRIAS",
+    "linha3": "VISUAIS.",
+    "subtitulo": "Vídeos, fotos e produções audiovisuais que conectam marcas ao seu público.",
+    "tag": "Videomaker & Produtor Visual",
+    "bg": "bg_fundo_back_2.png"
+  },
+  "stats": [
+    {
+      "num": "+80",
+      "label": "Projetos entregues"
+    },
+    {
+      "num": "5 anos",
+      "label": "De experiência"
+    },
+    {
+      "num": "100%",
+      "label": "Clientes satisfeitos"
+    }
+  ],
+  "videos": [
+    {
+      "id": "hTybgrnpgbw",
+      "titulo": "",
+      "capa": "capa_hTybgrnpgbw_33.jpg"
+    },
+    {
+      "id": "icyz7ohnRWI",
+      "titulo": "",
+      "capa": "capa_icyz7ohnRWI_22.jpg"
+    },
+    {
+      "id": "jOqiZbiyRGg",
+      "titulo": "",
+      "capa": "capa_jOqiZbiyRGg_0b5fc5833aa0095ebe30a15abbf5e45d.jpg"
+    },
+    {
+      "id": "5DvED73NII4",
+      "titulo": "",
+      "capa": ""
+    }
+  ],
+  "contato": {
+    "email": "contato@flowersfilms.com.br",
+    "whatsapp": "",
+    "instagram": "https://www.instagram.com/roogerflores"
+  },
+  "cursos": [],
+  "logo": "f.png",
+  "clientes": [
+    {
+      "nome": "Felipe Titto",
+      "cargo": "Ator e empresário",
+      "foto": "cli_0_515fc58fa68460980fc35a29b7bf888f.jpg"
+    },
+    {
+      "nome": "João Kepler",
+      "cargo": "Empresário",
+      "foto": "cli_1_f0dbf4ca2838ce01c4556ec69c4b2b54.jpg"
+    },
+    {
+      "nome": "Danilo Gentili",
+      "cargo": "Apresentador",
+      "foto": "cli_2_ultra-realistic_cinematic_of_202604231730.jpeg"
+    },
+    {
+      "nome": "Natalia Beauty",
+      "cargo": "Influenciadora",
+      "foto": "cli_3_4a97bef0796dc456e3448999a586c7f5.jpg"
+    },
+    {
+      "nome": "Roger Flores",
+      "cargo": "Empresario",
+      "foto": "cli_4_ultra-realistic_cinematic_black_202604231716.jpeg"
+    }
+  ],
+  "empresas": [
+    {
+      "nome": "Sicredi",
+      "logo": "emp_0_2222.png"
+    },
+    {
+      "nome": "X Business",
+      "logo": ""
+    },
+    {
+      "nome": "Agrotork",
+      "logo": ""
+    },
+    {
+      "nome": "SEBRAE",
+      "logo": ""
+    }
+  ],
+  "hero_texto": {
+    "titulo_normal": "Transformando",
+    "titulo_bold": "TUDO EM CINEMA",
+    "subtitulo": "e criando um legado absurdo para os clientes",
+    "desc_esquerda": "Uma produtora audiovisual que impacta absurdamente seu potêncial",
+    "desc_direita": "Especialistas em transformar momentos em obras cinematográficas que emocionam, conectam e deixam marcas eternas."
+  },
+  "video_apresentacao": "MdVHLOrzkuY",
+  "video_apres_thumb": "video_apres_thumb_foto-eroger.png"
+}

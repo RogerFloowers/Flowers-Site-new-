@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Flowers Films{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav id="nav">
+  <a href="{{ url_for('index') }}" class="nav-logo-link">
+    {% if cfg is defined and cfg.logo %}
+      <img src="{{ url_for('static', filename='img/' + cfg.logo) }}" alt="Flowers Films" class="nav-logo-img">
+    {% else %}
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Flowers Films" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="nav-logo-txt" style="display:none">FL<span>✿</span>WERS</div>
+    {% endif %}
+  </a>
+
+  <div class="nav-center">
+    <div class="nav-pill">
+      <a href="{{ url_for('portfolio_videos') }}" class="nav-pill-link">Portfólio</a>
+      <div class="nav-pill-divider"></div>
+      <a href="{{ url_for('index') }}#contato" class="nav-pill-link">Contato</a>
+      <div class="nav-pill-divider"></div>
+      <a href="{{ url_for('cursos') }}" class="nav-pill-link">Cursos</a>
+    </div>
+  </div>
+
+  <div class="nav-right">
+    {% if session.get('admin') %}
+      <a href="{{ url_for('admin') }}" class="nav-admin-btn">Admin</a>
+      <a href="{{ url_for('logout') }}" class="nav-sair">Sair</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="nav-admin-btn">Entrar</a>
+    {% endif %}
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nav-mobile-menu" id="nav-mobile">
+    <a href="{{ url_for('portfolio_videos') }}">Portfólio</a>
+    <a href="{{ url_for('index') }}#contato">Contato</a>
+    <a href="{{ url_for('cursos') }}">Cursos</a>
+  </div>
+</nav>
+
+<!-- INTRO SPLASH -->
+<div id="intro-splash">
+  <div id="intro-inner">
+    {% if cfg is defined and cfg.logo %}
+      <img src="{{ url_for('static', filename='img/' + cfg.logo) }}" alt="Flowers Films" id="intro-logo">
+    {% else %}
+      <div id="intro-logo-txt">Flowers <em>Films</em></div>
+    {% endif %}
+    <div id="intro-line"></div>
+    <div id="intro-tag">Videomaker &amp; Produtor Visual</div>
+    <div id="intro-bar"><div id="intro-bar-fill"></div></div>
+  </div>
+</div>
+<!-- FIM INTRO -->
+
+
+{% block content %}{% endblock %}
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Flowers <em>Films</em></div>
+    <div class="footer-links">
+      <a href="{{ url_for('portfolio_videos') }}">Portfólio</a>
+      <a href="{{ url_for('index') }}#contato">Contato</a>
+      <a href="{{ url_for('cursos') }}">Cursos</a>
+    </div>
+    <div class="footer-txt">© 2026 Flowers Films — Roger Flores</div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

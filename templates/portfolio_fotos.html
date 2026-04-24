@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Portfólio de Fotos — Flowers Films{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="sec-tag">Fotografia</div>
+  <h1>Ensaios & eventos</h1>
+</div>
+<div class="grid-fotos">
+  {% if fotos %}
+    {% for foto in fotos %}
+    <div class="foto-card">
+      <img src="{{ url_for('foto', filename=foto) }}" alt="Foto {{ loop.index }}" loading="lazy">
+      <div class="foto-hover"><div class="foto-plus"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="empty-state" style="grid-column:1/-1">Nenhuma foto cadastrada ainda. Faça upload no painel admin.</div>
+  {% endif %}
+</div>
+{% endblock %}
